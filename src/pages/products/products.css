@@ -1,0 +1,38 @@
+/* Add styles to the Products component */
+.products-container {
+    padding: 20px; /* Adjust padding as needed */
+    background-color: #f5f5f5; /* Background color for the container */
+  }
+  
+  /* Style for the Accordion component */
+  .MuiAccordion-root {
+    border: 1px solid #ddd; /* Add a border for the accordion */
+    margin-bottom: 10px; /* Adjust margin as needed */
+    background-color: #fff; /* Background color for the accordion */
+  }
+  
+  /* Style for the category text */
+  .MuiTypography-root {
+    font-weight: bold; /* Make the category text bold */
+  }
+  
+  /* Style for the images within the accordion */
+  .product-image {
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    margin: auto;
+    display: block;
+  }
+  
+  /* Style for the expand icon */
+  .MuiIconButton-root {
+    color: #007BFF; /* Color for the expand icon */
+  }
+  
+  /* Style for the expanded accordion content */
+  .MuiAccordionDetails-root {
+    padding: 10px; /* Adjust padding as needed */
+    background-color: #f9f9f9; /* Background color for the expanded content */
+  }
+  
