@@ -7,15 +7,25 @@ import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import CloseIcon from "@mui/icons-material/Close"; 
 import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { instance } from "../../services/apiService.";
+import Snackbar from "@mui/material/Snackbar";
+import React, { useState } from "react";
 
 export default function Login({ open, handleClose, createNew }) {
   const initialValues = {
     email: "",
     password: "",
+  };
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const openSnackbarMessage = (message) => {
+    setSnackbarMessage(message);
+    setOpenSnackbar(true);
   };
 
   const navigate = useNavigate();
@@ -25,19 +35,27 @@ export default function Login({ open, handleClose, createNew }) {
       .email("Valid email is required"),
     password: Yup.string().required("password is required"),
   });
+
   const submitLogin = (values) => {
-
-
-    sessionStorage.setItem("fullstack-001", JSON.stringify("values"));
-    handleClose();
-    navigate("/products");
+    const reqObject = {
+      user_name: values?.email,
+      password: values?.password,
+    };
 
     const loginApi = instance
-      .post("/login", values)
+      .post("/api/user/login", reqObject)
       .then((loginResponse) => {
-        sessionStorage.setItem("fullstack-001", JSON.stringify("values"));
-        handleClose();
-        navigate("/products");
+        if (loginResponse['data']['status'] == true) {
+          let username = loginResponse['data']['user']['name']
+            ? loginResponse['data']['user']['name']
+            : 'test';
+          sessionStorage.setItem("username", JSON.stringify(username));
+          handleClose();
+          navigate("/products");
+          openSnackbarMessage(loginResponse['data']['message']);
+        } else {
+          openSnackbarMessage("Login failed. Please check your credentials.");
+        }
       })
       .catch((err) => {});
     return loginApi;
@@ -45,6 +63,12 @@ export default function Login({ open, handleClose, createNew }) {
 
   return (
     <div>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackbar(false)}
+        message={snackbarMessage}
+      />
       <Modal
         open={open}
         onClose={handleClose}
@@ -54,6 +78,10 @@ export default function Login({ open, handleClose, createNew }) {
       >
         <Container component="main" maxWidth="xs">
           <CssBaseline />
+
+          <div className="close-icon" onClick={handleClose}>
+            <CloseIcon />
+          </div>
 
           <Formik
             initialValues={initialValues}

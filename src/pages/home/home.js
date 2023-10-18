@@ -6,7 +6,7 @@ const Home = () => {
     
     const navigate = useNavigate();
     const logOut = () => {
-        sessionStorage.removeItem("fullstack-001");
+        sessionStorage.removeItem("username");
         navigate("/")
     }
     return (

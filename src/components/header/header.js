@@ -12,6 +12,7 @@ const Navbar = () => {
   const [signup, setSignup] = useState(false);
   const auth = SessionStorage();
   const navigate = useNavigate();
+  const usernameData = JSON.parse(sessionStorage.getItem("username") || "{}");
 
   const handleClick = () => {
     setActive(!active);
@@ -32,12 +33,13 @@ const Navbar = () => {
     setOpen(false);
   };
   const logOut = () => {
-    sessionStorage.removeItem("fullstack-001");
+    sessionStorage.removeItem("username");
     navigate("/");
   };
 
   return (
     <nav className="header">
+      <img src='https://static.vecteezy.com/system/resources/previews/009/251/976/large_2x/four-circular-tower-are-connected-by-industrial-building-form-a-rectangle-tower-apartment-urban-constructions-city-scape-3d-isometric-building-isolated-on-white-vector.jpg' alt="Company Logo" className="company-logo" /> {/* Add the company logo here */}
       <h1 className="header-logo" onClick={()=>navigate("/home")}>Product</h1>
       <div className="menu-icon" onClick={handleClick}>
         <i className={active ? "fas fa-times" : "fas fa-bars"}></i>
@@ -55,11 +57,14 @@ const Navbar = () => {
       </ul>
 
       {auth ? (
-        <button onClick={logOut}>LogOut</button>
+        <>
+        <h1 className="header-username">{usernameData}</h1>
+        <button className="sign-button" onClick={logOut}>LogOut</button>
+        </>
       ) : (
         <>
           <button  onClick={() => setSignup(true)}>Sign Up</button>  &nbsp;
-          <button onClick={() => setOpen(true)}>Sign In</button>
+          <button className="sign-button" onClick={() => setOpen(true)}>Sign In</button>
         </>
       )}
 
